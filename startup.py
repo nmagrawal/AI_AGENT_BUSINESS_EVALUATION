@@ -1,53 +1,52 @@
 import os
 import logging
-from crewai import Agent, Task, Process, Crew
-from langchain.chat_models import ChatOpenAI
+from crewai import Agent, Task, Process, Crew, LLM
 
 # Setup basic configuration for logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG, filename='crewai_log.txt', 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Set your OpenAI API key
-api_key = os.getenv("OPENAI_API_KEY")
+# Set your API key
+api_key = os.getenv("GITHUB_API_KEY")
 
-# Define the OpenAI model using the correct model name
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key=api_key)
+# Define the model
+llm = LLM(
+    model="gpt-4o",
+    base_url="https://models.inference.ai.azure.com",
+    api_key=api_key
+)
 
-
+# Define agents
 marketer = Agent(
     role="Market Research Analyst",
     goal="Find out how big is the demand for my products and suggest how to reach the widest possible customer base",
     backstory="""You are an expert at understanding the market demand, target audience, and competition. This is crucial for 
-		validating whether an idea fulfills a market need and has the potential to attract a wide audience. You are good at coming up
-		with ideas on how to appeal to widest possible audience.
-		""",
-    verbose=True,  # enable more detailed or extensive output
-    allow_delegation=True,  # enable collaboration between agent
-    llm=llm # to load gemini
+    validating whether an idea fulfills a market need and has the potential to attract a wide audience. You are good at coming up
+    with ideas on how to appeal to the widest possible audience.""",
+    verbose=True,
+    allow_delegation=True,
+    llm=llm
 )
 
 technologist = Agent(
     role="Technology Expert",
     goal="Assess the technological feasibility and what technologies the company needs to adopt to succeed",
-    backstory=(
-        "You are a visionary in the realm of technology, with a deep understanding of both current and "
-        "emerging technological trends. Your expertise lies in knowing the technology and foreseeing how "
-        "it can be leveraged to solve real-world problems and drive business innovation."
-    ),
+    backstory="You are a visionary in the realm of technology, with a deep understanding of both current and emerging technological trends.",
     verbose=True,
     allow_delegation=True,
-    llm=llm  # Assigning the language model to the agent
+    llm=llm
 )
+
+#console.log("technologist",technologist)
+
 
 business_consultant = Agent(
     role="Business Development Consultant",
     goal="Evaluate and advise on the business model, scalability, and potential revenue streams for long-term sustainability",
-    backstory=(
-        "You are a seasoned professional with expertise in shaping business strategies. Your insight is "
-        "essential for turning innovative ideas into viable business models."
-    ),
+    backstory="You are a seasoned professional with expertise in shaping business strategies.",
     verbose=True,
     allow_delegation=True,
-    llm=llm  # Assigning the language model to the agent
+    llm=llm
 )
 
 # Define tasks for each agent
