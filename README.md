@@ -14,27 +14,60 @@ This project implements an AI-powered business evaluation system using CrewAI fr
 - CrewAI
 - Azure OpenAI API access (Any LLM works I used gpt-4o provided by Azure collaboration with OpenAI and github)
 
+## Project Structure
+
+```
+├── backend/           # Python backend
+│   ├── app.py        # Flask server
+│   ├── startup.py    # Business analysis logic
+│   ├── crewai_log.txt  # Execution logs
+│   └── requirements.txt
+└── frontend/          # React frontend
+    ├── src/
+    ├── public/
+    └── package.json
+```
+
 ## Setup
 
 1. Clone the repository
-2. Install dependencies:
+2. Install backend dependencies:
    ```bash
+   cd backend
    pip install -r requirements.txt
+   ```
+3. Install frontend dependencies:
+   ```bash
+   cd frontend
+   npm install
    ```
 3. Set up environment variables:
    ```bash
+   # For Azure OpenAI API key
    export GITHUB_API_KEY=your_api_key_here
    ```
+   
+   Important: Replace `your_api_key_here` with your actual Azure OpenAI API key. The application will not work without a valid API key.
 
 ## Usage
 
-Run the main script:
-
+1. Start the backend server:
 ```bash
-python startup.py
+cd backend
+python app.py
 ```
 
-The script will:
+2. Start the frontend development server:
+```bash
+cd frontend
+npm run dev
+```
+
+The application will be available at:
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5002
+
+The application will:
 
 1. Create three specialized agents (Market Analyst, Technology Expert, and Business Consultant)
 2. Execute tasks sequentially
