@@ -37,9 +37,6 @@ technologist = Agent(
     llm=llm
 )
 
-#console.log("technologist",technologist)
-
-
 business_consultant = Agent(
     role="Business Development Consultant",
     goal="Evaluate and advise on the business model, scalability, and potential revenue streams for long-term sustainability",
